@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+<body>
+<h1>Welcome to Restaurant Menu application</h1>
+<a href="{{url_for('addRestaurant')}}">Add new Restaurant</a>
+{% for restaurant in restaurants %}
+<h1>{{loop.index}} : {{restaurant.name}}</h1>
+<a href="{{url_for('editRestaurant', id=restaurant.id)}}">Edit</a>&nbsp;&nbsp;
+<a href="{{url_for('deleteRestaurant', id=restaurant.id)}}">Delete</a>&nbsp;&nbsp;
+<a href="{{url_for('getRestaurantMenu', restaurant_id=restaurant.id)}}">Check Menu Items</a>
+{% endfor %}
+</body>
+</html>
