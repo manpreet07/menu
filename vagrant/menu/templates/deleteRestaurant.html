@@ -1,0 +1,10 @@
+<!doctype html>
+<html>
+<body>
+<form method='post' enctype='multipart/form-data' autocomplete="on" action="{{url_for('deleteRestaurant', id=id)}}">
+<h2>Are you sure you want to delete '{{name}}'? </h2>
+<input type="submit" value="Submit" name="delete"> 
+</form>
+<a href="{{url_for('getRestaurants')}}">Go Back</a>
+</body>
+</html>

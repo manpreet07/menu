@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+<body>
+<form method='post' enctype='multipart/form-data' autocomplete="on" action='http://localhost:2200/{{id}}/edit'>
+<h2>Edit Restaurant</h2>
+<input name="edit" type="text" value={{name}}>
+<input type="submit" value="Submit"> 
+</form>
+<a href="{{url_for('getRestaurants')}}">Go Back</a>
+</body>
+</html>
