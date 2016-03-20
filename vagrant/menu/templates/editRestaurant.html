@@ -1,11 +1,14 @@
 <!doctype html>
 <html>
+<head>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
+</head>
 <body>
-<form method='post' enctype='multipart/form-data' autocomplete="on" action='http://localhost:2200/{{id}}/edit'>
+<form method='post' action="{{url_for('editRestaurant', id=id)}}">
 <h2>Edit Restaurant</h2>
-<input name="edit" type="text" value={{name}}>
+<input name="edit" type="text" size='30' placeholder={{name}}>
 <input type="submit" value="Submit"> 
-</form>
 <a href="{{url_for('getRestaurants')}}">Go Back</a>
+</form>
 </body>
 </html>

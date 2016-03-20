@@ -1,0 +1,21 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<!--MESSAGE FLASHING EXAMPLE -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+{% for message in messages %}
+  <li><strong>{{message}}</strong></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+{% block body %}
+
+{% endblock %}
+
+</html>
