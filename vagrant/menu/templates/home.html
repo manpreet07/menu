@@ -1,6 +1,9 @@
-<!doctype html>
+{% extends "menu.html" %}
 <html>
-<body>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+{% block body %}
 <h1>Welcome to Restaurant Menu application</h1>
 <a href="{{url_for('addRestaurant')}}">Add new Restaurant</a>
 {% for restaurant in restaurants %}
@@ -9,5 +12,5 @@
 <a href="{{url_for('deleteRestaurant', id=restaurant.id)}}">Delete</a>&nbsp;&nbsp;
 <a href="{{url_for('getRestaurantMenu', restaurant_id=restaurant.id)}}">Check Menu Items</a>
 {% endfor %}
-</body>
+{% endblock %}
 </html>
