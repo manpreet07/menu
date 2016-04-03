@@ -1,13 +1,15 @@
-<!doctype html>
-<html>
-<head>
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
-</head>
-<body>
-<form method='post' action="{{url_for('deleteRestaurant', id=id)}}">
-<h2>Are you sure you want to delete '{{name}}'? </h2>
-<input type="submit" value="Submit" name="delete"> 
-<a href="{{url_for('getRestaurants')}}">Go Back</a>
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<h2> Are you sure you want to delete {{restaurant.name}}? </h2>
+
+<form action="#" method = 'post'>
+
+	<button type="submit" class="btn btn-default delete" id="submit" type="submit">
+	<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete</button>
+		<a href = '{{url_for('showRestaurants')}}'>
+		<button class="btn btn-default delete" style="display:inline">
+		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+	</a>
 </form>
-</body>
-</html>
+{% endblock %}
