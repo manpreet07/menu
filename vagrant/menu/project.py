@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
-app = Flask(__name__)
 
+from functools import wraps
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem, User
@@ -15,6 +14,10 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
+
+
+app = Flask(__name__)
 
 CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant"
@@ -26,6 +29,16 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            return redirect(url_for('showLogin', next=request.url))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
@@ -33,6 +46,21 @@ def showLogin():
                     for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
+
+@app.route('/')
+def allCateories():
+    """
+    Method returns all categories and number of items for that category
+    """
+    menuItems = {}
+    restaurants = session.query(Restaurant).order_by(asc(Restaurant.name))
+    for restaurant in restaurants:
+        items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id).all()
+        if len(items):
+            menuItems[restaurant] = len(items)
+        else:
+            menuItems[restaurant] = 0
+    return render_template('home.html', menuItems=menuItems)
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -255,8 +283,8 @@ def restaurantsJSON():
 
 #Show all restaurants
 
-@app.route('/')
 @app.route('/restaurant/')
+@login_required
 def showRestaurants():
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -267,6 +295,7 @@ def showRestaurants():
 
 #Create a new restaurant
 @app.route('/restaurant/new/', methods=['GET','POST'])
+@login_required
 def newRestaurant():
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -285,6 +314,7 @@ def newRestaurant():
 
 #Edit a restaurant
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editRestaurant(restaurant_id):
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -301,6 +331,7 @@ def editRestaurant(restaurant_id):
 
 #Delete a restaurant
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods = ['GET','POST'])
+@login_required
 def deleteRestaurant(restaurant_id):
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -317,6 +348,7 @@ def deleteRestaurant(restaurant_id):
 #Show a restaurant menu
 @app.route('/restaurant/<int:restaurant_id>/')
 @app.route('/restaurant/<int:restaurant_id>/menu/')
+@login_required
 def showMenu(restaurant_id):
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -329,6 +361,7 @@ def showMenu(restaurant_id):
 
 #Create a new menu item
 @app.route('/restaurant/<int:restaurant_id>/menu/new/',methods=['GET','POST'])
+@login_required
 def newMenuItem(restaurant_id):
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -348,6 +381,7 @@ def newMenuItem(restaurant_id):
 
 #Edit a menu item
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET','POST'])
+@login_required
 def editMenuItem(restaurant_id, menu_id):
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -373,6 +407,7 @@ def editMenuItem(restaurant_id, menu_id):
 
 #Delete a menu item
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods = ['GET','POST'])
+@login_required
 def deleteMenuItem(restaurant_id,menu_id):
     if 'username' not in login_session:
         return redirect(url_for('showLogin'))
@@ -387,7 +422,7 @@ def deleteMenuItem(restaurant_id,menu_id):
         else:
             return render_template('deleteMenuItem.html', item = itemToDelete, login_session=login_session)
 
-# if __name__ == '__main__':
-app.secret_key = 'super_secret_key'
-app.debug = True
-# app.run(host = '0.0.0.0', port = 2121)
+if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
+    app.debug = True
+    app.run(host = '0.0.0.0', port = 5000)
