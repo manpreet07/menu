@@ -30,8 +30,7 @@
 </div>
 	
 	<div class="row padding-top padding-bottom">
-		<div class="col-md-1"></div>
-		<div class="col-md-10 padding-none">
+		<div class="col-md-12 padding-none">
 			<a href="{{url_for('newRestaurant')}}">
 				<button class="btn btn-default" id="new-restaurant">
 				
@@ -40,16 +39,13 @@
 			</a>
 		
 				</div>
-				<div class="col-md-1"></div>
 			</div>
 			{% for restaurant in restaurants %}
 				<a href = "{{url_for('showMenu', restaurant_id = restaurant.id)}}">
 					<div class="row">
-						<div class="col-md-1"></div>
-							<div class="col-md-10 restaurant-list">
+							<div class="col-md-12 restaurant-list">
 								<h3>{{restaurant.name}}</h3>
 							</div>
-						<div class="col-md-1"></div>
 					</div>
 				</a>
 			{% endfor %}	
