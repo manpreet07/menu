@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+
+<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+
+<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="container">
+<div class="row top-menu">
+
+	<div class="col-md-6">
+		<a href="{{url_for('showRestaurants')}}">
+			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>Show All Restaurants
+		</a>
+	</div>
+    <div class="col-md-6" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{url_for('showLogin')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+</div>
+
+<div class="row top-menu">
+		<div class="col-md-10"></div>
+<!-- <div class="col-md-2 text-right"><a href="{{url_for('showLogin')}}">Click Here to Log in </a></div>-->
+	</div>
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Restaurants</h1>
+		</div>
+	</div>
+
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none">
+
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+				      {% if menuItems %}
+					      {% for key, val in menuItems.iteritems() %}
+										<a href = "{{url_for('allCateories')}}">
+											<div class="row">
+													<div class="col-md-12 restaurant-list">
+														<h3>{{key.name}}</h3>
+													</div>
+											</div>
+										</a>
+								{% endfor %}
+					   {% else %}
+					   <h1>No Restaurants!</h1>
+				       {% endif %}
+	</div>
+  </body>
+
+  </html>
