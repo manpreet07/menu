@@ -431,7 +431,7 @@ def deleteMenuItem(restaurant_id, menu_id):
             flash('Menu Item Successfully Deleted')
             return redirect(url_for('showMenu', restaurant_id=restaurant_id))
         else:
-            return render_template('deleteMenuItem.html', item=itemToDelete, login_session=login_session)
+            return render_template('deletemenuitem.html', item=itemToDelete, login_session=login_session)
 
 app.secret_key = 'super_secret_key'
 app.debug = True
