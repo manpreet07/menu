@@ -128,8 +128,7 @@ u }
 .menu-item {
 	background: #DDC974;
 	padding: 20px;
-	margin: 20px;
-	margin-left: -20px;
+	margin-bottom: 20px;
 }
 
 .menu-item a {
